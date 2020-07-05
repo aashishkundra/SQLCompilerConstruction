@@ -1,0 +1,119 @@
+program: LOGIN NEWLINE queries
+
+queries: query NEWLINE queries | QUIT | END
+
+query: INSERT queryinsert | DELETE querydelete| GET queryget | UPDATE queryupdate 
+
+queryinsert: RECORD valuesinsert INTO FILENAME SEMICOLON
+
+valuesinsert:  valuesinsertdept | valuesinsertemp
+
+valuesinsertemp: INTVALUE COMMA STRVALUE COMMA INTVALUE COMMA STRVALUE COMMA INTVALUE COMMA INTVALUE
+
+valuesinsertdept: INTVALUE COMMA STRVALUE COMMA STRVALUE 
+
+querydelete: RECORD FROM FILENAME SEMICOLON | RECORD FROM FILENAME WHERE delconditionsall SEMICOLON  
+
+delconditionsall: delconditionsallemp | delconditionsalldept 
+
+delconditionsalldept: delconditionsalldept OR delconditionsanddept  | delconditionsanddept
+
+delconditionsanddept: delconditionsanddept AND delconditiondept | delconditiondept
+
+delconditiondept: DNAME OPERATOR STRVALUE | | DNUM OPERATOR INTVALUE | DLOCATION OPERATOR STRVALUE 
+
+delconditionsallemp: delconditionsallemp OR delconditionsandemp | delconditionsandemp
+
+delconditionsandemp: delconditionsandemp AND delconditionemp | delconditionemp 
+
+delconditionemp: EID OPERATOR INTVALUE
+			   | ENAME OPERATOR STRVALUE
+			   | EAGE OPERATOR INTVALUE
+			   | EADDRESS OPERATOR STRVALUE 
+			   | SALARY OPERATOR INTVALUE
+               | DEPTNO OPERATOR INTVALUE
+
+queryupdate: RECORD IN FILENAME SET updation WHERE updconditionsall SEMICOLON
+
+updation: DNAME TO STRVALUE
+		| DNUM TO INTVALUE 
+		| DLOCATION TO STRVALUE 
+		| EID TO INTVALUE 
+		| ENAME TO STRVALUE
+		| EAGE TO INTVALUE 
+		| EADDRESS TO STRVALUE
+		| SALARY TO INTVALUE
+		| DEPTNO TO INTVALUE
+
+updconditionsall: updconditionsallemp | updconditionsalldept 
+
+updconditionsalldept: updconditionsalldept OR updconditionsanddept | updconditionsanddept
+
+updconditionsanddept: updconditionsanddept AND updconditiondept 
+					| updconditiondept
+				
+updconditiondept: DNAME OPERATOR STRVALUE
+		 | DNUM OPERATOR INTVALUE 
+		 | DLOCATION OPERATOR STRVALUE 
+
+updconditionsallemp: updconditionsallemp OR updconditionsandemp | updconditionsandemp 
+
+updconditionsandemp: updconditionsandemp AND updconditionemp 
+					| updconditionemp
+
+updconditionemp: EID OPERATOR INTVALUE
+				| ENAME OPERATOR STRVALUE 
+				| EAGE OPERATOR INTVALUE
+				| EADDRESS OPERATOR STRVALUE
+				| SALARY OPERATOR INTVALUE 
+				| DEPTNO OPERATOR INTVALUE 
+
+queryget: 	STAR FROM FILENAME SEMICOLON 
+			| STAR FROM FILENAME WHERE getconditionsall SEMICOLON  
+			|getattributes FROM FILENAME WHERE getconditionsall SEMICOLON
+
+getattributes: getattributesdept | getattributesemp
+
+getattributesdept: getonedept getattributesdept
+			 	| COMMA getonedept getattributesdept
+			 	|
+
+getonedept: DNUM  
+	  | DNAME 
+	  | DLOCATION 
+
+getattributesemp: getoneemp getattributesemp
+				| COMMA getoneemp getattributesemp
+				|
+
+getoneemp:  EID  
+		|  ENAME 
+		|  EAGE  
+		|  EADDRESS
+		|  SALARY  
+		| DEPTNO  
+
+getconditionsall: getconditionsalldept | getconditionsallemp
+
+getconditionsalldept: getconditionsalldept OR getconditionsanddept 
+
+getconditionsalldept: getconditionsalldept OR getconditionsanddept | getconditionsanddept
+
+getconditionsanddept: getconditionsanddept AND getconditiondept
+				| getconditiondept
+				
+getconditiondept: DNAME  OPERATOR STRVALUE 
+		 | DNUM OPERATOR INTVALUE
+		 | DLOCATION OPERATOR STRVALUE
+
+getconditionsallemp: getconditionsallemp OR getconditionsandemp | getconditionsandemp 
+
+getconditionsandemp: getconditionsandemp AND getconditionemp 
+					| getconditionemp
+
+getconditionemp: EID OPERATOR INTVALUE 
+				| ENAME  OPERATOR STRVALUE
+				| EAGE OPERATOR INTVALUE 
+				| EADDRESS OPERATOR STRVALUE
+				| SALARY OPERATOR INTVALUE
+				| DEPTNO OPERATOR INTVALUE
